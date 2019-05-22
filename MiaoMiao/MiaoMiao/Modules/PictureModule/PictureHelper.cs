@@ -30,12 +30,12 @@ namespace MiaoMiao.Modules.PictureModule
             if (Ls.Ok(cache_list)) R.Images = cache_list;
 
             //读取最新图片
-            WallpaperModel model = WallpaperTool.GetToday();
-            if (model != null && Ls.Ok(model.images))
+            List<ImagesItem> images = WallpaperTool.GetLast10Days();
+            if (Ls.Ok(images))
             {
-                foreach (var item in model.images)
+                foreach (var item in images)
                 {
-                    string name = item.title;
+                    string copyright = item.copyright;
                     string url = item.GetImageUrl();
                     string file = DirTool.Combine(R.Paths.Pictures, item.hsh + ".jpg");
                     //不存在的图片添加到缓存
@@ -45,7 +45,7 @@ namespace MiaoMiao.Modules.PictureModule
                         {
                             R.Images.Add(new ImageModel()
                             {
-                                Name = name,
+                                Copyright = copyright,
                                 Url = url,
                                 File = file,
                                 CreateTime = DateTime.Now,
@@ -64,9 +64,9 @@ namespace MiaoMiao.Modules.PictureModule
         /// 选择图片
         /// </summary>
         /// <returns></returns>
-        public static string GetImageFile()
+        public static ImageModel GetImage()
         {
-            var item = R.Images.OrderBy(x => x.LastDisplayTime).FirstOrDefault();
+            ImageModel item = R.Images.OrderBy(x => x.LastDisplayTime).FirstOrDefault();
             if (item != null)
             {
                 item.DisplayCount++;
@@ -74,7 +74,7 @@ namespace MiaoMiao.Modules.PictureModule
 
                 //重新缓存图片信息
                 Json.Object2File(R.Files.PicturesList, R.Images);
-                return item.File;
+                return item;
             }
             return null;
         }
@@ -83,7 +83,7 @@ namespace MiaoMiao.Modules.PictureModule
             if (Ls.Ok(R.Images))
             {
                 //仅保留最近15天的图片记录（清理过期图片）
-                DateTime expire_time = DateTime.Now.AddDays(-15);
+                DateTime expire_time = DateTime.Now.AddYears(-1);
                 List<ImageModel> save_image = new List<ImageModel>();
                 foreach (var item in R.Images)
                 {

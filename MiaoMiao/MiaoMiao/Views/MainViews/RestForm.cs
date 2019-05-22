@@ -1,6 +1,8 @@
 ﻿using Azylee.Core.DataUtils.CollectionUtils;
+using Azylee.Core.DataUtils.DateTimeUtils;
 using Azylee.Core.DataUtils.StringUtils;
 using MiaoMiao.Commons;
+using MiaoMiao.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,24 +28,36 @@ namespace MiaoMiao.Views.MainViews
             FormBorderStyle = FormBorderStyle.None;//设置无边框
             StartPosition = FormStartPosition.CenterScreen;//设置位置居中
             WindowState = FormWindowState.Maximized;//最大化显示
+
+            LbCopyright.Left = 20;
+            LbCopyright.Top = Height - LbCopyright.Height - 20;
+            LbTime.Left = Width - LbTime.Width - 20;
+            LbTime.Top = 40;
+            LbDate.Left = Width - LbDate.Width - 30;
+            LbDate.Top = LbTime.Height + 60;
+            LbChineseHour.Left = LbTime.Left - LbChineseHour.Width - 20;
+            LbChineseHour.Top = LbTime.Top + LbTime.Height - LbChineseHour.Height - 10;
         }
         private void RestForm_DoubleClick(object sender, EventArgs e)
         {
             CancelRest();
         }
-        public void Rest(string file)
+        public void Rest(ImageModel model)
         {
             try
             {
                 R.MainUI.Invoke(new Action(() =>
                 {
+                    UIDateTime();
                     ShowTime_Current = 0;
                     LbProgress.Width = 0;
                     TmMain.Enabled = true;
+                    TmTime.Enabled = true;
                     //设置背景图
-                    if (Str.Ok(file))
+                    if (model != null && Str.Ok(model.File))
                     {
-                        BackgroundImage = Image.FromFile(file);
+                        LbCopyright.Text = model.Copyright;
+                        BackgroundImage = Image.FromFile(model.File);
                     }
                     ShowForm();
                 }));
@@ -59,6 +73,7 @@ namespace MiaoMiao.Views.MainViews
                     ShowTime_Current = ShowTime_Max;
                     LbProgress.Width = 0;
                     TmMain.Enabled = false;
+                    TmTime.Enabled = false;
                     HideForm();
                 }));
             }
@@ -78,8 +93,19 @@ namespace MiaoMiao.Views.MainViews
                 LbProgress.Width = (int)width;
             }
         }
+        private void TmTime_Tick(object sender, EventArgs e)
+        {
+            UIDateTime();
+        }
 
         #region UI操作
+        private void UIDateTime()
+        {
+            DateTime now = DateTime.Now;
+            LbTime.Text = now.ToString("HH:mm");
+            LbDate.Text = $"{now.Month}月{now.Day}日 {WeekDayTool.ToWeekDay(now)}";
+            LbChineseHour.Text = ChineseHourTool.GetDesc(now);
+        }
         /// <summary>
         /// 隐藏窗口
         /// </summary>
@@ -101,6 +127,5 @@ namespace MiaoMiao.Views.MainViews
             Activate();
         }
         #endregion
-
     }
 }

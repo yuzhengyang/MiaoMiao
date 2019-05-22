@@ -7,7 +7,7 @@ namespace MiaoMiao.Models
 {
     public class ImageModel
     {
-        public string Name { get; set; }
+        public string Copyright { get; set; }
         public string Url { get; set; }
         public string File { get; set; }
         public DateTime CreateTime { get; set; }

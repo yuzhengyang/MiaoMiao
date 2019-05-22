@@ -1,5 +1,6 @@
 ﻿using Azylee.Core.ThreadUtils.SleepUtils;
 using MiaoMiao.Commons;
+using MiaoMiao.Models;
 using MiaoMiao.Modules.PictureModule;
 using MiaoMiao.Views.MainViews;
 using System;
@@ -24,7 +25,7 @@ namespace MiaoMiao.Modules.ClockModule
                 {
                     if (DateTime.Now.Minute == 0 && DateTime.Now.Second < 5)
                     {
-                        string file = PictureHelper.GetImageFile();
+                        ImageModel file = PictureHelper.GetImage();
                         R.FormMan.GetUnique<RestForm>().Rest(file);
 
                         PictureHelper.ImageLoading();//每隔一小时下载图片

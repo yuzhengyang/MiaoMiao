@@ -38,6 +38,7 @@
             this.LbTime = new System.Windows.Forms.Label();
             this.LbDate = new System.Windows.Forms.Label();
             this.LbChineseHour = new System.Windows.Forms.Label();
+            this.LbLike = new System.Windows.Forms.Label();
             this.PnProgress.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -117,6 +118,19 @@
             this.LbChineseHour.TabIndex = 4;
             this.LbChineseHour.Text = "上午";
             // 
+            // LbLike
+            // 
+            this.LbLike.AutoSize = true;
+            this.LbLike.BackColor = System.Drawing.Color.Transparent;
+            this.LbLike.Font = new System.Drawing.Font("微软雅黑", 42F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.LbLike.ForeColor = System.Drawing.Color.White;
+            this.LbLike.Location = new System.Drawing.Point(12, 9);
+            this.LbLike.Name = "LbLike";
+            this.LbLike.Size = new System.Drawing.Size(70, 75);
+            this.LbLike.TabIndex = 5;
+            this.LbLike.Text = "♡";
+            this.LbLike.Click += new System.EventHandler(this.LbLike_Click);
+            // 
             // RestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -125,6 +139,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClientSize = new System.Drawing.Size(544, 346);
+            this.Controls.Add(this.LbLike);
             this.Controls.Add(this.LbChineseHour);
             this.Controls.Add(this.LbTime);
             this.Controls.Add(this.LbDate);
@@ -152,5 +167,6 @@
         private System.Windows.Forms.Label LbTime;
         private System.Windows.Forms.Label LbDate;
         private System.Windows.Forms.Label LbChineseHour;
+        private System.Windows.Forms.Label LbLike;
     }
 }

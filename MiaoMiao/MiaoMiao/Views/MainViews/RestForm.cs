@@ -3,6 +3,7 @@ using Azylee.Core.DataUtils.DateTimeUtils;
 using Azylee.Core.DataUtils.StringUtils;
 using MiaoMiao.Commons;
 using MiaoMiao.Models;
+using MiaoMiao.Modules.PictureModule;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,7 +17,8 @@ namespace MiaoMiao.Views.MainViews
 {
     public partial class RestForm : Form
     {
-        public int ShowTime_Max = 2 * 60 * 10;
+        public ImageModel CurrentImage = null;
+        public int ShowTime_Max = 20 * 10;
         public int ShowTime_Current = 0;
         public RestForm()
         {
@@ -38,14 +40,29 @@ namespace MiaoMiao.Views.MainViews
             LbChineseHour.Left = LbTime.Left - LbChineseHour.Width - 20;
             LbChineseHour.Top = LbTime.Top + LbTime.Height - LbChineseHour.Height - 10;
         }
+
+        private void LbLike_Click(object sender, EventArgs e)
+        {
+            if (CurrentImage != null)
+            {
+                CurrentImage.Like = !CurrentImage.Like;
+                LbLike.Text = CurrentImage.Like ? "♥" : "♡";
+                PictureHelper.SetLike(CurrentImage.Copyright, CurrentImage.Like);
+            }
+            else
+            {
+                LbLike.Text = "";
+            }
+        }
         private void RestForm_DoubleClick(object sender, EventArgs e)
         {
-            CancelRest();
+            if (ShowTime_Current >= ShowTime_Max) CancelRest();
         }
         public void Rest(ImageModel model)
         {
             try
             {
+                CurrentImage = model;
                 R.MainUI.Invoke(new Action(() =>
                 {
                     UIDateTime();
@@ -56,6 +73,7 @@ namespace MiaoMiao.Views.MainViews
                     //设置背景图
                     if (model != null && Str.Ok(model.File))
                     {
+                        LbLike.Text = model.Like ? "♥" : "♡";
                         LbCopyright.Text = model.Copyright;
                         BackgroundImage = Image.FromFile(model.File);
                     }
@@ -85,7 +103,9 @@ namespace MiaoMiao.Views.MainViews
             ShowTime_Current++;
             if (ShowTime_Current > ShowTime_Max)
             {
+
                 //CancelRest();
+                TmMain.Enabled = false;
             }
             else
             {
@@ -127,5 +147,6 @@ namespace MiaoMiao.Views.MainViews
             Activate();
         }
         #endregion
+
     }
 }

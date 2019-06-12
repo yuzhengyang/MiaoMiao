@@ -39,7 +39,7 @@ namespace MiaoMiao.Modules.PictureModule
                     string url = item.GetImageUrl();
                     string file = DirTool.Combine(R.Paths.Pictures, item.hsh + ".jpg");
                     //不存在的图片添加到缓存
-                    if (!R.Images.Any(x => x.File == file))
+                    if (!R.Images.Any(x => x.Copyright == copyright))
                     {
                         if (HttpTool.Download(url, file))
                         {
@@ -78,11 +78,23 @@ namespace MiaoMiao.Modules.PictureModule
             }
             return null;
         }
+        public static bool SetLike(string copyright, bool like)
+        {
+            try
+            {
+                ImageModel item = R.Images.FirstOrDefault(x => x.Copyright == copyright);
+                if (item != null) item.Like = like;
+                //重新缓存图片信息
+                Json.Object2File(R.Files.PicturesList, R.Images);
+            }
+            catch { return false; }
+            return true;
+        }
         public static void CleanImage()
         {
             if (Ls.Ok(R.Images))
             {
-                //仅保留最近15天的图片记录（清理过期图片）
+                //仅保留最近一年内的图片记录（清理过期图片）
                 DateTime expire_time = DateTime.Now.AddYears(-1);
                 List<ImageModel> save_image = new List<ImageModel>();
                 foreach (var item in R.Images)

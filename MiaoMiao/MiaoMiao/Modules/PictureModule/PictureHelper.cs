@@ -95,7 +95,7 @@ namespace MiaoMiao.Modules.PictureModule
             if (Ls.Ok(R.Images))
             {
                 //仅保留最近一年内的图片记录（清理过期图片）
-                DateTime expire_time = DateTime.Now.AddYears(-1);
+                DateTime expire_time = DateTime.Now.AddYears(-3);
                 List<ImageModel> save_image = new List<ImageModel>();
                 foreach (var item in R.Images)
                 {

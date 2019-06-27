@@ -44,6 +44,7 @@
             // 
             // TmMain
             // 
+            this.TmMain.Interval = 50;
             this.TmMain.Tick += new System.EventHandler(this.TmMain_Tick);
             // 
             // TmTime

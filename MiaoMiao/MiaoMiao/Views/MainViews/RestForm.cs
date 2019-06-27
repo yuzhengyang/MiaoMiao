@@ -18,7 +18,7 @@ namespace MiaoMiao.Views.MainViews
     public partial class RestForm : Form
     {
         public ImageModel CurrentImage = null;
-        public int ShowTime_Max = 20 * 10;
+        public int ShowTime_Max = 5 * 20;
         public int ShowTime_Current = 0;
         public RestForm()
         {
